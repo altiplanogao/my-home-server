@@ -2,7 +2,3 @@
 
 resource_cache: "{{ lookup('env','HOME') }}/.resources"
 
-sharing_dir: /storage
-smb_conf:
-  sharing_dir: /storage
-  init_pwd: abcdefg

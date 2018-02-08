@@ -22,10 +22,3 @@
    create mask = 0700
    directory mask = 0700
    valid users = %S
-[workzone]
-   comment = Workzone on Samba
-   path = {{ smb_conf.dirs[0].path}}
-   writable   = yes
-   browseable = yes 
-   guest ok = yes
-   write list = @{{ dev_group }}

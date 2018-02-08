@@ -4,7 +4,7 @@ smb_conf:
     - path: "/sharing"
       owner: "{{ nobody }}"
       group: "{{ nogroup }}"
-      permission: "0777"
+      mode: "0777"
   users:
     - name: andy
       pwd: aabbcc
