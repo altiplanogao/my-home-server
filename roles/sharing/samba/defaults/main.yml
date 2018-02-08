@@ -1,0 +1,11 @@
+---
+smb_conf:
+  dirs:
+    - path: "/sharing"
+      owner: "{{ nobody }}"
+      group: "{{ nogroup }}"
+      permission: "0777"
+  users:
+    - name: andy
+      pwd: aabbcc
+

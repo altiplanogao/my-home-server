@@ -1,0 +1,79 @@
+[global]
+   workgroup = WORKGROUP
+   server string = %h server (Samba)
+   dns proxy = no
+   log file = /var/log/samba/log.%m
+   max log size = 1000
+   panic action = /usr/share/samba/panic-action %d
+   server role = standalone server
+   passdb backend = tdbsam
+   obey pam restrictions = yes
+   unix password sync = yes
+   passwd program = /usr/bin/passwd %u
+   passwd chat = *Enter\snew\s*\spassword:* %n\n *Retype\snew\s*\spassword:* %n\n *password\supdated\ssuccessfully* .
+   pam password change = yes
+   map to guest = bad user
+   usershare allow guests = yes
+   #
+   follow symlinks = no
+   wide links = no
+   # enable some read/write tuning
+   aio read size = 16384
+   aio write size = 16384
+   aio write behind = true
+   write cache size = 2097152
+   max xmit = 65536
+   large readwrite = yes
+[homes]
+   comment = Home Directories
+   browseable = no
+   read only = yes
+   create mask = 0700
+   directory mask = 0700
+   valid users = %S
+[parents]
+   comment = parents
+   path = /storage/parents
+   writable   = yes
+   read list = father, mother
+   write list = father
+   valid users = father, mother
+   hide unreadable = yes
+   hide unwriteable files = yes
+   access based share enum = yes
+[Entertainment]
+   comment = Entertainment
+   path = /storage/Entertainment
+   writable   = yes
+   browseable = yes
+   write list = @adults
+[Family]
+   comment = Family
+   path = /storage/Family
+   writable   = yes
+   browseable = yes
+   read list = @family
+   write list = @adults
+[Technical]
+   comment = Technical
+   path = /storage/Technical
+   writable   = yes
+   browseable = yes
+   read list = father
+   write list = father
+   create mask = 0775
+   directory mask = 0775
+   force group = family
+   valid users = father
+   hide unreadable = yes
+   hide unwriteable files = yes
+   access based share enum = yes
+[Upload]
+   comment = Upload
+   path = /storage/Upload
+   writable   = yes
+   browseable = yes
+   write list = @family
+   create mask = 0775
+   directory mask = 0775
+   force group = family

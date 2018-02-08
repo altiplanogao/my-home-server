@@ -1,0 +1,5 @@
+---
+
+pkg_set:
+  dependencies: ["nfs-kernel-server", "nfs-common"]
+  service: nfs-kernel-server

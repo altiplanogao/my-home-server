@@ -1,0 +1,15 @@
+---
+
+- name: Install apps
+  hosts: home_machines
+  become: yes
+  become_method: sudo
+  vars_files:
+    - ./vars/config.yml
+    - .config.yml
+
+  roles:
+    - basic/user
+    - raspbian/docker
+    - sharing/nfs
+    - raspbian/samba

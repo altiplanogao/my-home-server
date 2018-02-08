@@ -1,0 +1,19 @@
+---
+
+- name: Resolve vars
+  include_vars: "{{ item_x }}"
+  with_first_found:
+  - files:
+    - '{{ ansible_distribution }}-{{ ansible_distribution_release }}.yml'
+    - '{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml'
+    - '{{ ansible_distribution }}.yml'
+    - '{{ ansible_os_family }}.yml'
+    - 'default.yml'
+    paths: '{{ role_path }}/vars/os_aware'
+  loop_control:
+    loop_var: item_x
+
+- import_tasks: setup_vnc.yml
+  vars:
+    vnc_s: '{{ pkg_set[pkg_set.conf_select] }}'
+
