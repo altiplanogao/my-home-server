@@ -6,6 +6,6 @@ smb_conf:
       group: "{{ nogroup }}"
       mode: "0777"
   users:
-    - name: andy
-      pwd: aabbcc
+    - name: someone
+      pwd: somepwd
 

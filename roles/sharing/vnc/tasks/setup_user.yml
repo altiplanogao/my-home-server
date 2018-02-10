@@ -1,0 +1,58 @@
+---
+
+- name: Get vnc user's group
+  shell: "id -ng {{ vnc_user.name }}"
+  register: get_group_name_stat
+  changed_when: False
+
+- set_fact:
+    # vnc_setpw_cmd: "echo {{ (ansible_distribution in ['Ubuntu', 'Debian']) | ternary(' ', '-e') }} '{{ vnc_user.pwd }}\n{{ vnc_user.pwd }}\n' | vncpasswd"
+    vnc_user_name: "{{ vnc_user.name }}"
+    vnc_user_group: "{{ get_group_name_stat.stdout }}"
+    vnc_user_vnc_dir: "/home/{{ vnc_user.name }}/.vnc"
+    vnc_setpw_cmd: "printf '{{ vnc_user.pwd }}\n{{ vnc_user.pwd }}\n' | vncpasswd"
+- name: Init vnc
+  shell: "{{ vnc_setpw_cmd }}"
+  register: initvnc_stat
+  become: true
+  become_user: "{{ vnc_user_name }}"
+- name: Present .vnc dir
+  file:
+    path: '{{ vnc_user_vnc_dir }}'
+    owner: "{{ vnc_user_name }}"
+    group: "{{ vnc_user_group }}"
+    state: directory
+    mode: 0755
+
+- name: Backup xstartup
+  block:
+    - name: Check if .bk exist
+      stat: path="{{ vnc_user_vnc_dir }}/xstartup.bk"
+      register: bkstat
+    - name: Check if xstartup exist
+      stat: path="{{ vnc_user_vnc_dir }}/xstartup"
+      register: xstat
+    - name: Backup xstartup
+      copy:
+        remote_src: true
+        src: "{{ vnc_user_vnc_dir }}/xstartup"
+        dest: "{{ vnc_user_vnc_dir }}/xstartup.bk"
+        owner: '{{ vnc_user_name}}' 
+        group: '{{ vnc_user_group}}' 
+        mode: 0770 
+      when: (xstat.stat.exists) and ( not bkstat.stat.exists )
+
+- name: Set xstartup by copy
+  template:
+    src: '{{ vnc_s.xstartup }}'
+    dest: '{{ vnc_user_vnc_dir }}/{{ vnc_s.xstartup }}'
+    owner: '{{ vnc_user_name }}' 
+    group: '{{ vnc_user_group}}' 
+    mode: 0770 
+- name: Set xstartup
+  template:
+    src: '{{ vnc_s.xstartup }}'
+    dest: '{{ vnc_user_vnc_dir }}/xstartup'
+    owner: '{{ vnc_user_name }}' 
+    group: '{{ vnc_user_group}}' 
+    mode: 0770 

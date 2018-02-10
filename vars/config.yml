@@ -2,3 +2,47 @@
 
 resource_cache: "{{ lookup('env','HOME') }}/.resources"
 
+
+# Users
+deploy_groups:
+  - { name: family,   id: 2000 }
+  - { name: adults,   id: 2001 }
+  - { name: kids,     id: 2002 }
+  - { name: grandps,  id: 2003 }
+  - { name: guests,   id: 2100 }
+
+deploy_users:
+  - { name: father,   id: 2001, groups: [family, adults] , pwd: 'passw0rd', desktop_user: True, sudoer: True }
+  - { name: mother, id: 2002, groups: [family, adults], pwd: 'yss' }
+  - { name: boy,    id: 2003, groups: [family, kids] }
+  - { name: guest,     id: 2200, groups: [guests] }
+
+# NFS
+nfs_dirs:
+  - { path: '/storage',   owner: '', group: '', mode: "0700", access: '*(rw,sync,no_root_squash,no_subtree_check)' }
+
+# Samba
+smb_conf:
+  dirs:
+    - path: "/storage"
+      owner: "{{ nobody }}"
+      group: "{{ nogroup }}"
+      mode: "0777"
+  users:
+    - name: father
+      pwd: changeme
+    - name: mother
+      pwd: changeme
+
+# VNC
+vnc_conf:
+  users:
+    - name: father
+      pwd: changeme
+    - name: mother
+      pwd: changeme
+
+docker_users:
+  - father
+
+

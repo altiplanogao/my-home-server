@@ -51,5 +51,6 @@
   register: smbc_res
   changed_when: False
   failed_when: "( smbc_res | failed )"
+  with_items: "{{ smb_conf.users }}"
   loop_control:
     loop_var: smb_u

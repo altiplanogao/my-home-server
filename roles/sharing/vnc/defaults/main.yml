@@ -1,3 +1,6 @@
 ---
 
-vnc_init_pwd: abcdefg
+vnc_conf:
+  users:
+    - name: someone
+      pwd: somepwd
