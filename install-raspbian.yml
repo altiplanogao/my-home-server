@@ -13,3 +13,4 @@
     - raspbian/docker
     - sharing/nfs
     - raspbian/samba
+    - server_setting

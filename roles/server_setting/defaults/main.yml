@@ -1,0 +1,11 @@
+---
+
+server_sconf:
+  devices:
+    - name: "storage"
+      spec: "/dev/sdb1"
+      file: "/storage"
+      vfstype: "ext4"
+      mntops: "defaults"
+      freq: 0
+      passno: 0

@@ -1,0 +1,15 @@
+---
+
+- name: Check if device exists
+  stat: path="{{ dev_item.spec }}"
+  register: devstat
+- name: Calc fstab line
+  set_fact:
+    fstab_line: "{{ devstat.stat.exists | ternary('', '# ') }}{{ dev_item.spec }}  {{ dev_item.file }}  {{ dev_item.vfstype }}  {{ dev_item.mntops }}  {{ dev_item.freq }}  {{ dev_item.passno }}"
+- name: Present fstab line
+  blockinfile:
+    path: /etc/fstab
+    marker: "# {mark} SERVER MOUNT SETTING {{ dev_item.name }}"
+    block: |
+     {{ fstab_line }}
+    create: yes

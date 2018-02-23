@@ -9,3 +9,4 @@ vm/.vagrant/
 .config.yml
 .hosts*
 launch.py
+.smb.conf.v4

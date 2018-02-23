@@ -1,0 +1,37 @@
+---
+
+- name: Present mount dir
+  file:
+    path: '{{ ditem.file }}'
+    owner: '{{ nobody }}'
+    group: '{{ nogroup }}'
+    state: directory
+    mode: 0777
+  with_items: '{{ server_sconf.devices }}'
+  loop_control:
+    loop_var: ditem
+
+- name: Mount external disk
+  include_tasks: mount_dev.yml
+  vars:
+    dev_item: "{{ ditem }}"
+  with_items: '{{ server_sconf.devices }}'
+  loop_control:
+    loop_var: ditem
+
+- name: Set samba configure file
+  template:
+    src: '{{ item }}'
+    dest: /etc/samba/smb.conf
+    backup: yes
+  with_first_found:
+  - files:
+      - '.smb.conf.v4'
+      - 'smb.conf.v4'
+    paths:
+      - '{{ playbook_dir }}'
+      - '{{ role_path }}/templates'
+
+- name: Restart samba service
+  service: name={{ item }} state=started enabled=yes
+  with_items: ["smbd"]

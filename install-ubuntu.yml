@@ -10,9 +10,8 @@
 
   roles:
     - basic/user
-    # - raspbian/docker
-    # - raspbian/nfs
-    # - raspbian/samba
-    - sharing/nfs
+    - dev/docker
     - sharing/samba
+    - sharing/nfs
     - sharing/vnc
+    - server_setting
